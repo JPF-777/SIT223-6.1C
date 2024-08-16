@@ -3,6 +3,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
+		echo"text changed"
                 echo "Compiling and packaging the code is done by using Maven"
             }
         }
