@@ -14,6 +14,7 @@ pipeline {
 		always{
 		    emailext body: 'Test Message',
 			    subject: 'Test Subject',
+			    attachLog: true,
 			    to: 'test@example.com'
 		}
                 success{
