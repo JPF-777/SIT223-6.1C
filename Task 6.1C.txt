@@ -11,12 +11,6 @@ pipeline {
                 echo 'Unit tests are done to ensure the code runs as expected and integration tests check to ensure different parts of the application work together as expected. This is done by using TestComplete automation software'
             }
             post{
-		always{
-		    emailext body: 'Test Message',
-			    subject: 'Test Subject',
-			    attachLog: true,
-			    to: 'test@example.com'
-		}
                 success{
 		    mail to: "joshpeyton04@gmail.com",
                     subject: "Unit & Integration Test Results",
