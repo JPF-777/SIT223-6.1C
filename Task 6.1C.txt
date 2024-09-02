@@ -10,24 +10,24 @@ pipeline {
             steps {
                 echo 'Unit tests are done to ensure the code runs as expected and integration tests check to ensure different parts of the application work together as expected. This is done by using TestComplete automation software'
             }
-            post{
-                success{
-		    script {
-	                // Send email with the log as an attachment
-	                def log = currentBuild.rawBuild.getLog(100).join('\n')
-	                mail to: "joshpeyton04@gmail.com",
-	                    subject: "Unit & Integration Test Results",
-	                    body: "Build & Integration tests are unsuccessful, logs are .\n\nLog:\n${log}"
-	            }
+            post {
+                success {
+                    script {
+                        def logContent = readFile(file: "${env.BUILD_LOG_PATH}")
+                        // Send email with build log content in body
+                        mail to: "joshpeyton04@gmail.com",
+                             subject: "s",
+                             body: "Stage: Unit and Integration Tests using JUnit was successful! Here are the build logs:\n\n${logContent}"
+                    }
                 }
-                failure{
-		    script {
-	                // Send email with the log as an attachment
-	                def log = currentBuild.rawBuild.getLog(100).join('\n')
-	                mail to: "joshpeyton04@gmail.com",
-	                    subject: "Unit & Integration Test Results",
-	                    body: "Build & Integration tests are unsuccessful, logs are .\n\nLog:\n${log}"
-	            }
+                failure {
+                    script {
+                        def logContent = readFile(file: "${env.BUILD_LOG_PATH}")
+                        // Send email with build log content in body
+                        mail to: "joshpeyton04@gmail.com",
+                             subject: "f",
+                             body: "Stage: Unit and Integration Tests using JUnit was unsuccessful! Debug the code and fix the errors before building again. Here are the build logs:\n\nLog Entries\n-----------------\n${logContent}"
+                    }
                 }
             }
         }
