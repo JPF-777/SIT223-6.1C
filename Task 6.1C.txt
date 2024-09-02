@@ -6,8 +6,8 @@ pipeline {
                 steps {
                     echo "Compiling and packaging the code is done by using Maven"
                 }
-            }
-        	stage('Unit & Integration Tests') {
+        }
+        stage('Unit & Integration Tests') {
                 steps {
                     echo 'Unit tests are done to ensure the code runs as expected and integration tests check to ensure different parts of the application work together as expected. This is done by using TestComplete automation software'
                 }
@@ -27,13 +27,13 @@ pipeline {
                              body: "Unit & Integration Test Worked."
                     }
                 }
-            }
-    	    stage('Code Analysis') {
+        }
+    	stage('Code Analysis') {
                 steps {
                     echo 'Analyses code to make sure it meets industry standards. The tool used here is SonarQube'
                 }
-            }
-            stage('Security Scan') {
+        }
+        stage('Security Scan') {
                 steps {
                     echo "Scans code to find any security vulnerabilities and the tool that is used is Snyk Code, for some tests, SonarQube can be used as well"
                 }
@@ -53,21 +53,21 @@ pipeline {
                              body: "Unit & Integration Test Worked."
                     }
                 }
-            }
-    	    stage('Deploy To Staging') {
+        }
+    	stage('Deploy To Staging') {
                 steps {
                     echo "Deploys the application to a staging server with it being the AWS EC2 Instance"
                 }
-            }
-    	    stage('Integration Tests On Staging') {
+        }
+    	stage('Integration Tests On Staging') {
                 steps {
                     echo "This makes sure that the application works as expected in a production-like environment. This can be automated on either AWS CodePipeline or AWS CloudFormation"
                 }
-            }
-    	    stage('Deploy To Production') {
+        }
+    	stage('Deploy To Production') {
                 steps {
                     echo "Deploys the application to a production server with it being the AWS EC2 instance"
                 }
-            }
+        }
     }
 }
