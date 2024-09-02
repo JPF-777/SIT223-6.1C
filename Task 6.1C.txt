@@ -23,14 +23,13 @@ pipeline {
             }
         }
         success {
-            archiveArtifacts artifacts: '**/target/*.log', allowEmptyArchive: true
             script {
-                def logContent = currentBuild.rawBuild.getLog(1000).join("\n")
-                mail to: 'joshpeyton04@gmail.com',
-                     subject: "Pipeline Successful: ${env.JOB_NAME} ${env.BUILD_NUMBER}",
-                     body: "The pipeline has completed successfully.\n\nHere are the logs:\n${logContent}",
-                     attachLog: true
-        }
+                // Send email with the log as an attachment
+                def log = currentBuild.rawBuild.getLog(100).join('\n')
+                mail to: 'jploveslego101@gmail.com',
+                     subject: "Pipeline Failed: ${currentBuild.fullDisplayName}",
+                     body: "Pipeline failed. Check Jenkins for more details.\n\nLog:\n${log}"
+            }
         }
     }
 }
