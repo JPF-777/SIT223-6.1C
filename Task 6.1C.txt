@@ -2,8 +2,7 @@ pipeline {
     agent any
 
     stages {
-        stages {
-            stage('Build') {
+        stage('Build') {
                 steps {
                     echo "Compiling and packaging the code is done by using Maven"
     		echo "build.log"
@@ -71,6 +70,5 @@ pipeline {
                     echo "Deploys the application to a production server with it being the AWS EC2 instance"
                 }
             }
-        }
     }
 }
