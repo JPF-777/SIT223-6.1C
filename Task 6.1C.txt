@@ -11,7 +11,6 @@ pipeline {
                 echo 'Unit tests are done to ensure the code runs as expected and integration tests check to ensure different parts of the application work together as expected. This is done by using TestComplete automation software'
             }
             post{
-		def log = currentBuild.rawBuild.getLog(100).join('\n')
                 success{
 		    script {
 	                // Send email with the log as an attachment
