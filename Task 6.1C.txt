@@ -22,9 +22,13 @@ pipeline {
                         }
                     }
                     success {
-                        mail to: 'jploveslego101@gmail.com',
-                             subject: "Unit & Integration Test Success: ${currentBuild.fullDisplayName}",
-                             body: "Unit & Integration Test Worked."
+                        script {
+                            // Send email with the log as an attachment
+                            def log = currentBuild.rawBuild.getLog(100).join('\n')
+                            mail to: 'jploveslego101@gmail.com',
+                                 subject: "Unit & Integration Test Fail: ${currentBuild.fullDisplayName}",
+                                 body: "Unit & Integration Test Fail. Check Jenkins for more details.\n\nLog:\n${log}"
+                        }
                     }
                 }
         }
