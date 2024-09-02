@@ -13,14 +13,22 @@ pipeline {
             post{
 		def log = currentBuild.rawBuild.getLog(100).join('\n')
                 success{
-		    mail to: "joshpeyton04@gmail.com",
-                    subject: "Unit & Integration Test Results",
-                    body: "Build & Integration tests are successful, logs are .\n\nLog:\n${log}"
+		    script {
+	                // Send email with the log as an attachment
+	                def log = currentBuild.rawBuild.getLog(100).join('\n')
+	                mail to: "joshpeyton04@gmail.com",
+	                    subject: "Unit & Integration Test Results",
+	                    body: "Build & Integration tests are unsuccessful, logs are .\n\nLog:\n${log}"
+	            }
                 }
                 failure{
-                    mail to: "joshpeyton04@gmail.com",
-                    subject: "Unit & Integration Test Results",
-                    body: "Build & Integration tests are unsuccessful, logs are .\n\nLog:\n${log}"
+		    script {
+	                // Send email with the log as an attachment
+	                def log = currentBuild.rawBuild.getLog(100).join('\n')
+	                mail to: "joshpeyton04@gmail.com",
+	                    subject: "Unit & Integration Test Results",
+	                    body: "Build & Integration tests are unsuccessful, logs are .\n\nLog:\n${log}"
+	            }
                 }
             }
         }
