@@ -23,7 +23,7 @@ pipeline {
             }
         }
         success {
-            mail to: 'whettersjf@gmail.com',
+            mail to: 'joshpeyton04@gmail.com',
                  subject: "Pipeline Succeeded: ${currentBuild.fullDisplayName}",
                  body: "Pipeline succeeded. All stages completed successfully."
         }
