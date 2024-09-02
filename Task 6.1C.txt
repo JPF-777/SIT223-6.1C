@@ -23,9 +23,14 @@ pipeline {
             }
         }
         success {
-            mail to: 'jploveslego101@gmail.com',
-                 subject: "Pipeline Succeeded: ${currentBuild.fullDisplayName}",
-                 body: "Pipeline succeeded. All stages completed successfully."
+            archiveArtifacts artifacts: '**/target/*.log', allowEmptyArchive: true
+            script {
+                def logContent = currentBuild.rawBuild.getLog(1000).join("\n")
+                mail to: 'joshpeyton04@gmail.com',
+                     subject: "Pipeline Successful: ${env.JOB_NAME} ${env.BUILD_NUMBER}",
+                     body: "The pipeline has completed successfully.\n\nHere are the logs:\n${logContent}",
+                     attachLog: true
+        }
         }
     }
 }
