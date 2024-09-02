@@ -11,6 +11,18 @@ pipeline {
             steps {
                 echo 'Unit tests are done to ensure the code runs as expected and integration tests check to ensure different parts of the application work together as expected. This is done by using TestComplete automation software'
             }
+	    post{
+                success{
+                    mail to: "joshpeyton04@gmail.com",
+                    subject: "Security Scan Test Results",
+                    body: "Security scan tests are successful, logs are \n ${env.RUN_DISPLAY_URL}\n"
+                }
+                failure{
+                    mail to: "joshpeyton04@gmail.com",
+                    subject: "Security Scan Test Results",
+                    body: "Security scan tests are successful, logs are \n ${env.RUN_DISPLAY_URL}\n"
+                }
+            }
         }
 	    stage('Code Analysis') {
             steps {
@@ -50,26 +62,4 @@ pipeline {
             }
         }
     }
-	post {
-	    success {
-	        archiveArtifacts artifacts: '**/target/*.log', allowEmptyArchive: true
-	        script {
-	            def logContent = currentBuild.rawBuild.getLog(1000).join("\n")
-	            mail to: 'joshpeyton04@gmail.com',
-	                 subject: "Pipeline Successful: ${env.JOB_NAME} ${env.BUILD_NUMBER}",
-	                 body: "The pipeline has completed successfully.\n\nHere are the logs:\n${logContent}",
-	                 attachLog: true
-	        }
-	    }
-	    failure {
-	        archiveArtifacts artifacts: '**/target/*.log', allowEmptyArchive: true
-	        script {
-	            def logContent = currentBuild.rawBuild.getLog(1000).join("\n")
-	            mail to: 'joshpeyton04@gmail.com',
-	                 subject: "Pipeline Failed: ${env.JOB_NAME} ${env.BUILD_NUMBER}",
-	                 body: "The pipeline has failed. Please check the logs.\n\nHere are the logs:\n${logContent}",
-	                 attachLog: true
-	        }
-	    }
-	}
 }
