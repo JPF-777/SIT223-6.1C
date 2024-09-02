@@ -11,26 +11,6 @@ pipeline {
             steps {
                 echo 'Unit tests are done to ensure the code runs as expected and integration tests check to ensure different parts of the application work together as expected. This is done by using TestComplete automation software'
             }
-            post {
-                success {
-                    script {
-                        def logContent = readFile(file: "build.log")
-                        // Send email with build log content in body
-                        mail to: "joshpeyton04@gmail.com",
-                             subject: "s",
-                             body: "Stage: Unit and Integration Tests using JUnit was successful! Here are the build logs:\n\n${logContent}"
-                    }
-                }
-                failure {
-                    script {
-                        def logContent = readFile(file: "${env.BUILD_LOG_PATH}")
-                        // Send email with build log content in body
-                        mail to: "joshpeyton04@gmail.com",
-                             subject: "f",
-                             body: "Stage: Unit and Integration Tests using JUnit was unsuccessful! Debug the code and fix the errors before building again. Here are the build logs:\n\nLog Entries\n-----------------\n${logContent}"
-                    }
-                }
-            }
         }
 	    stage('Code Analysis') {
             steps {
@@ -70,4 +50,26 @@ pipeline {
             }
         }
     }
+	post {
+	    success {
+	        archiveArtifacts artifacts: '**/target/*.log', allowEmptyArchive: true
+	        script {
+	            def logContent = currentBuild.rawBuild.getLog(1000).join("\n")
+	            mail to: 'joshpeyton04@gmail.com',
+	                 subject: "Pipeline Successful: ${env.JOB_NAME} ${env.BUILD_NUMBER}",
+	                 body: "The pipeline has completed successfully.\n\nHere are the logs:\n${logContent}",
+	                 attachLog: true
+	        }
+	    }
+	    failure {
+	        archiveArtifacts artifacts: '**/target/*.log', allowEmptyArchive: true
+	        script {
+	            def logContent = currentBuild.rawBuild.getLog(1000).join("\n")
+	            mail to: 'joshpeyton04@gmail.com',
+	                 subject: "Pipeline Failed: ${env.JOB_NAME} ${env.BUILD_NUMBER}",
+	                 body: "The pipeline has failed. Please check the logs.\n\nHere are the logs:\n${logContent}",
+	                 attachLog: true
+	        }
+	    }
+	}
 }
