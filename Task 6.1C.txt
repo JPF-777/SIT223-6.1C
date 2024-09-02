@@ -12,15 +12,19 @@ pipeline {
                     echo 'Unit tests are done to ensure the code runs as expected and integration tests check to ensure different parts of the application work together as expected. This is done by using TestComplete automation software'
                 }
                 post {
-                    always {
+                    failure {
                         script {
-                            // Send email with the status and logs
-                            emailext(
-                                to: 'joshpeyton04@gmail.com',
-                                subject: "Pipeline: Unit and Integration Tests ${currentBuild.currentResult}",
-                                body: """<p>${currentBuild.fullDisplayName} - ${currentBuild.currentResult}</p><p>Check the attached logs for more details.</p>""",
-                            )
+                            // Send email with the log as an attachment
+                            def log = currentBuild.rawBuild.getLog(100).join('\n')
+                            mail to: 'jploveslego101@gmail.com',
+                                 subject: "Unit & Integration Test Fail: ${currentBuild.fullDisplayName}",
+                                 body: "Unit & Integration Test failed. Check Jenkins for more details.\n\nLog:\n${log}"
                         }
+                    }
+                    success {
+                        mail to: 'jploveslego101@gmail.com',
+                             subject: "Unit & Integration Test Success: ${currentBuild.fullDisplayName}",
+                             body: "Unit & Integration Test Worked."
                     }
                 }
         }
@@ -46,7 +50,7 @@ pipeline {
                     success {
                         mail to: 'jploveslego101@gmail.com',
                              subject: "Unit & Integration Test Success: ${currentBuild.fullDisplayName}",
-                             body: "Unit & Integration Test Worked."
+                             body: "Secutity Scan Worked."
                     }
                 }
         }
