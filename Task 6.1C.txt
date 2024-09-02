@@ -19,7 +19,6 @@ pipeline {
                                 to: 'joshpeyton04@gmail.com',
                                 subject: "Pipeline: Unit and Integration Tests ${currentBuild.currentResult}",
                                 body: """<p>${currentBuild.fullDisplayName} - ${currentBuild.currentResult}</p><p>Check the attached logs for more details.</p>""",
-                                attachLog: true
                             )
                         }
                     }
