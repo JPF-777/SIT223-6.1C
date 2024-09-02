@@ -5,7 +5,6 @@ pipeline {
         stage('Build') {
                 steps {
                     echo "Compiling and packaging the code is done by using Maven"
-    		echo "build.log"
                 }
             }
         	stage('Unit & Integration Tests') {
@@ -18,14 +17,14 @@ pipeline {
                             // Send email with the log as an attachment
                             def log = currentBuild.rawBuild.getLog(100).join('\n')
                             mail to: 'joshpeyton04@gmail.com',
-                                 subject: "Pipeline Failed: ${currentBuild.fullDisplayName}",
-                                 body: "Pipeline failed. Check Jenkins for more details.\n\nLog:\n${log}"
+                                 subject: "Unit & Integration Test Fail: ${currentBuild.fullDisplayName}",
+                                 body: "Unit & Integration Test Fail. Check Jenkins for more details.\n\nLog:\n${log}"
                         }
                     }
                     success {
                         mail to: 'joshpeyton04@gmail.com',
-                             subject: "Pipeline Succeeded: ${currentBuild.fullDisplayName}",
-                             body: "Pipeline succeeded. Unit & Integration Test Worked."
+                             subject: "Unit & Integration Test Success: ${currentBuild.fullDisplayName}",
+                             body: "Unit & Integration Test Worked."
                     }
                 }
             }
@@ -44,14 +43,14 @@ pipeline {
                             // Send email with the log as an attachment
                             def log = currentBuild.rawBuild.getLog(100).join('\n')
                             mail to: 'joshpeyton04@gmail.com',
-                                 subject: "Pipeline Failed: ${currentBuild.fullDisplayName}",
-                                 body: "Pipeline failed. Check Jenkins for more details.\n\nLog:\n${log}"
+                                 subject: "Secutity Scan Fail: ${currentBuild.fullDisplayName}",
+                                 body: "Secutity Scan failed. Check Jenkins for more details.\n\nLog:\n${log}"
                         }
                     }
                     success {
                         mail to: 'joshpeyton04@gmail.com',
-                             subject: "Pipeline Succeeded: ${currentBuild.fullDisplayName}",                            
-                             body: "Pipeline succeeded. Secutity Scan Worked."
+                             subject: "Secutity Scan Success: ${currentBuild.fullDisplayName}",                            
+                             body: "Secutity Scan Worked."
                     }
                 }
             }
