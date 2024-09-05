@@ -19,7 +19,7 @@ pipeline {
                             def pipelineStatus = currentBuild.result ?: 'UNKNOWN'
                             
                             emailext(
-                                subject: "${jobName} - Build ${buildNumber} - ${pipelineStatus.toUpperCase()} For Unit & Integration Test"
+                                subject: "${jobName} - Build ${buildNumber} - ${pipelineStatus.toUpperCase()} For Unit & Integration Test",
                                 body: "Unit & Integration Test Failed.",                                
                                 to: 'joshpeyton04@gmail.com',
                                 from: 'joshpeyton04@gmail.com',
@@ -35,7 +35,7 @@ pipeline {
                             def pipelineStatus = currentBuild.result ?: 'UNKNOWN'
                             
                             emailext(
-                                subject: "${jobName} - Build ${buildNumber} - ${pipelineStatus.toUpperCase()} For Unit & Integration Test"
+                                subject: "${jobName} - Build ${buildNumber} - ${pipelineStatus.toUpperCase()} For Unit & Integration Test",
                                 body: "Unit & Integration Test Worked.",                                
                                 to: 'joshpeyton04@gmail.com',
                                 from: 'joshpeyton04@gmail.com',
