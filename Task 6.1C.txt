@@ -89,22 +89,6 @@ pipeline {
                         }
                     }
                 }
-                post{
-                    failure {
-                        script {
-                            // Send email with the log as an attachment
-                            def log = currentBuild.rawBuild.getLog(100).join('\n')
-                            mail to: 'jploveslego101@gmail.com',
-                                 subject: "Secutity Scan Fail: ${currentBuild.fullDisplayName}",
-                                 body: "Secutity Scan failed. Check Jenkins for more details.\n\nLog:\n${log}"
-                        }
-                    }
-                    success {
-                        mail to: 'jploveslego101@gmail.com',
-                             subject: "Unit & Integration Test Success: ${currentBuild.fullDisplayName}",
-                             body: "Secutity Scan Worked."
-                    }
-                }
         }
     	stage('Deploy To Staging') {
                 steps {
