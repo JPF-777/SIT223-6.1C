@@ -13,18 +13,36 @@ pipeline {
                 }
                 post {
                     failure {
-                        script {
-                            // Send email with the log as an attachment
-                            def log = currentBuild.rawBuild.getLog(100).join('\n')
-                            mail to: 'jploveslego101@gmail.com',
-                                 subject: "Unit & Integration Test Fail: ${currentBuild.fullDisplayName}",
-                                 body: "Unit & Integration Test failed. Check Jenkins for more details.\n\nLog:\n${log}"
+                        script{
+                            def jobName = env.JOB_NAME
+                            def buildNumber = env.BUILD_NUMBER
+                            def pipelineStatus = currentBuild.result ?: 'UNKNOWN'
+                            
+                            emailext(
+                                subject: "${jobName} - Build ${buildNumber} - ${pipelineStatus.toUpperCase()} For Unit & Integration Test"
+                                body: "Unit & Integration Test Failed.",                                
+                                to: 'joshpeyton04@gmail.com',
+                                from: 'joshpeyton04@gmail.com',
+                                replyTo: 'joshpeyton04@gmail.com',
+                                attachLog: true
+                            )                            
                         }
                     }
                     success {
-                        mail to: 'jploveslego101@gmail.com',
-                             subject: "Unit & Integration Test Success: ${currentBuild.fullDisplayName}",
-                             body: "Unit & Integration Test Worked."
+                        script{
+                            def jobName = env.JOB_NAME
+                            def buildNumber = env.BUILD_NUMBER
+                            def pipelineStatus = currentBuild.result ?: 'UNKNOWN'
+                            
+                            emailext(
+                                subject: "${jobName} - Build ${buildNumber} - ${pipelineStatus.toUpperCase()} For Unit & Integration Test"
+                                body: "Unit & Integration Test Worked.",                                
+                                to: 'joshpeyton04@gmail.com',
+                                from: 'joshpeyton04@gmail.com',
+                                replyTo: 'joshpeyton04@gmail.com',
+                                attachLog: true
+                            )                            
+                        }
                     }
                 }
         }
