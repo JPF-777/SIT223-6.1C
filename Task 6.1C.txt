@@ -55,6 +55,40 @@ pipeline {
                 steps {
                     echo "Scans code to find any security vulnerabilities and the tool that is used is Snyk Code, for some tests, SonarQube can be used as well"
                 }
+                post {
+                    failure {
+                        script{
+                            def jobName = env.JOB_NAME
+                            def buildNumber = env.BUILD_NUMBER
+                            def pipelineStatus = currentBuild.result ?: 'UNKNOWN'
+                            
+                            emailext(
+                                subject: "${jobName} - Build ${buildNumber} - ${pipelineStatus.toUpperCase()} For Secutity Scan",
+                                body: "Secutity Scan Failed.",                                
+                                to: 'joshpeyton04@gmail.com',
+                                from: 'joshpeyton04@gmail.com',
+                                replyTo: 'joshpeyton04@gmail.com',
+                                attachLog: true
+                            )                            
+                        }
+                    }
+                    success {
+                        script{
+                            def jobName = env.JOB_NAME
+                            def buildNumber = env.BUILD_NUMBER
+                            def pipelineStatus = currentBuild.result ?: 'UNKNOWN'
+                            
+                            emailext(
+                                subject: "${jobName} - Build ${buildNumber} - ${pipelineStatus.toUpperCase()} For Secutity Scan",
+                                body: "Secutity Scan Worked.",                                
+                                to: 'joshpeyton04@gmail.com',
+                                from: 'joshpeyton04@gmail.com',
+                                replyTo: 'joshpeyton04@gmail.com',
+                                attachLog: true
+                            )                            
+                        }
+                    }
+                }
                 post{
                     failure {
                         script {
